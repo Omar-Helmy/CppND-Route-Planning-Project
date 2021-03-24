@@ -11,12 +11,13 @@
 using namespace std::experimental;
 
 // Construct start_node and end_node as in the model.
-using Coords = struct { 
-    float start_x = 0.1;
-    float start_y = 0.1;
-    float end_x = 0.9;
-    float end_y = 0.9;
-    friend std::istream& operator>>(std::istream &cin,Coords &c);
+struct Coords;
+using Coords = struct Coords { 
+    float start_x;
+    float start_y;
+    float end_x;
+    float end_y;
+    friend std::istream& operator>>(std::istream &cin, Coords &c);
 };
 std::istream& operator>>(std::istream &cin, Coords &c) {
     cin >> c.start_x;
@@ -80,7 +81,7 @@ int main(int argc, const char **argv)
     RouteModel model{osm_data};
 
     // Create RoutePlanner object and perform A* search.
-    RoutePlanner route_planner{model, coords.start_x, coords.start_y, coords.end_xx, coords.end_y};
+    RoutePlanner route_planner(model, coords.start_x, coords.start_y, coords.end_x, coords.end_y);
     route_planner.AStarSearch();
 
     std::cout << "Distance: " << route_planner.GetDistance() << " meters. \n";
